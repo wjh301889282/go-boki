@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"exchangeapp/global"
-	"exchangeapp/models"
+	"exchangeapp/models/artice"
 	"net/http"
 	"time"
 
@@ -16,7 +16,7 @@ import (
 var cacheKey = "articles"
 
 func CreateArticle(ctx *gin.Context) {
-	var article models.Article
+	var article artice.Article
 
 	if err := ctx.ShouldBindJSON(&article); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -46,7 +46,7 @@ func GetArticles(ctx *gin.Context) {
 	cachedData, err := global.RedisDB.Get(cacheKey).Result()
 
 	if err == redis.Nil {
-		var articles []models.Article
+		var articles []artice.Article
 
 		if err := global.Db.Find(&articles).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -74,7 +74,7 @@ func GetArticles(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	} else {
-		var articles []models.Article
+		var articles []artice.Article
 
 		if err := json.Unmarshal([]byte(cachedData), &articles); err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -87,7 +87,7 @@ func GetArticles(ctx *gin.Context) {
 func GetArticleByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	var article models.Article
+	var article artice.Article
 
 	if err := global.Db.Where("id = ?", id).First(&article).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

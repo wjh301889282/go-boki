@@ -2,6 +2,7 @@ package router
 
 import (
 	"exchangeapp/controllers" // 导入 controllers 包，处理具体的路由逻辑
+	"exchangeapp/controllers/TeamManagement"
 	"exchangeapp/middlewares" // 导入 middlewares 包，处理请求中间件
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -64,6 +65,18 @@ func SetupRouter() *gin.Engine {
 		api.GET("/articles/:id/like", controllers.GetArticleLikes)
 	}
 
+	// TeamManagement 路由分组
+	teamMg := r.Group("/teamMg")
+	{
+		// 创建团队
+		teamMg.POST("/createteam", TeamManagement.CreateTeam) // 创建新团队
+
+		// 添加用户到团队
+		teamMg.POST("/addusertoteam", TeamManagement.AddUserToTeam) // 将用户添加到指定团队，并设置角色和权限
+
+		// 查询团队成员
+		teamMg.GET("/team/:id/members", TeamManagement.GetTeamMembers) // 查询指定团队的所有成员信息
+	}
 	// 返回设置好的路由引擎
 	return r
 }

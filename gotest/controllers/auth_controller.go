@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"exchangeapp/global"       // 引入全局包，用于访问数据库实例
-	"exchangeapp/models"       // 引入模型包，定义数据库表和结构体
+	"exchangeapp/global" // 引入全局包，用于访问数据库实例
+	"exchangeapp/models/user"
 	"exchangeapp/rsp"          // 引入错误处理包
 	"exchangeapp/utils"        // 引入工具包，处理密码加密、JWT 生成等操作
 	"github.com/gin-gonic/gin" // 引入 Gin 框架，用于处理 Web 请求和响应
@@ -21,7 +21,7 @@ import (
 // @Failure 500 {string} string "服务器内部错误"
 // @Router /api/auth/register [post]
 func Register(ctx *gin.Context) {
-	var user models.User
+	var user user.User
 
 	// 绑定 JSON 数据到 user 结构体
 	if err := ctx.ShouldBindJSON(&user); err != nil {
@@ -85,7 +85,7 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	var user models.User
+	var user user.User
 
 	// 从数据库中查询用户
 	if err := global.Db.Where("username = ?", input.Username).First(&user).Error; err != nil {
