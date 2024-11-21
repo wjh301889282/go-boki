@@ -70,10 +70,8 @@ func SetupRouter() *gin.Engine {
 	{
 		// 创建团队
 		teamMg.POST("/createteam", TeamManagement.CreateTeam) // 创建新团队
-
 		// 添加用户到团队
 		teamMg.POST("/addusertoteam", TeamManagement.AddUserToTeam) // 将用户添加到指定团队，并设置角色和权限
-
 		// 查询团队成员
 		teamMg.GET("/team/:id/members", TeamManagement.GetTeamMembers) // 查询指定团队的所有成员信息
 	}

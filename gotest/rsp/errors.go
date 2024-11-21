@@ -107,6 +107,7 @@ func NewErrorResponse(code int, data interface{}) *ErrorResponse {
 	}
 }
 
+// NewSuccessResponse 成功返回
 func NewSuccessResponse(code int, data interface{}) *ErrorResponse {
 	// 查找错误信息
 	message, exists := SuccessMessages[code]

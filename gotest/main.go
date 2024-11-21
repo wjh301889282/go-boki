@@ -4,6 +4,7 @@ import (
 	"context"
 	"exchangeapp/config"
 	_ "exchangeapp/docs" // main 文件中导入 docs 包
+	"exchangeapp/gorm"
 	"exchangeapp/router"
 	"fmt"
 	"log"
@@ -16,7 +17,7 @@ import (
 func main() {
 	// 初始化配置文件
 	config.InitConfig()
-
+	gorm.InitGORM()
 	fmt.Println("加载成功配置环境")
 	// 设置路由
 	r := router.SetupRouter()

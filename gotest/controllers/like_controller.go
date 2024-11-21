@@ -13,8 +13,6 @@ import (
 // @Description 根据文章ID，为指定文章增加一次点赞数。
 // @Tags 文章操作
 // @Param id path string true "文章ID"
-// @Success 200 {object} gin.H{"message": "Successfully liked the article"}
-// @Failure 500 {object} gin.H{"error": "错误信息"}
 // @Router /articles/{id}/like [post]
 func LikeArticle(ctx *gin.Context) {
 	// 获取文章ID
@@ -39,8 +37,6 @@ func LikeArticle(ctx *gin.Context) {
 // @Description 根据文章ID，获取指定文章的点赞数。
 // @Tags 文章操作
 // @Param id path string true "文章ID"
-// @Success 200 {object} gin.H{"likes": "点赞数"}
-// @Failure 500 {object} gin.H{"error": "错误信息"}
 // @Router /articles/{id}/likes [get]
 func GetArticleLikes(ctx *gin.Context) {
 	// 获取文章ID

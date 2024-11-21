@@ -17,7 +17,7 @@ import (
 // @Param name body string true "团队名称"
 // @Param description body string false "团队描述"
 // @Param owner_id body int true "团队创建者的用户ID"
-// @Success 201 {object} rsp.SuccessResponse
+// @Success 201 {object} string "注册成功，返回 JWT token"
 // @Failure 400 {object} rsp.ErrorResponse
 // @Router /teams [post]
 func CreateTeam(ctx *gin.Context) {
@@ -52,7 +52,7 @@ func CreateTeam(ctx *gin.Context) {
 // @Param user_id body int true "用户ID"
 // @Param role body string true "用户角色（owner/admin/member）"
 // @Param permissions body string true "权限（JSON格式）"
-// @Success 200 {object} rsp.SuccessResponse
+// @Success 200 {object} string "注册成功，返回 JWT token"
 // @Failure 400 {object} rsp.ErrorResponse
 // @Router /teams/add_user [post]
 func AddUserToTeam(ctx *gin.Context) {
@@ -98,7 +98,7 @@ func AddUserToTeam(ctx *gin.Context) {
 // @Description 查询指定团队的所有成员信息
 // @Tags 团队操作
 // @Param id path int true "团队ID"
-// @Success 200 {object} rsp.SuccessResponse
+// @Success 200 {object} string "注册成功，返回 JWT token"
 // @Failure 404 {object} rsp.ErrorResponse
 // @Router /teams/{id}/members [get]
 func GetTeamMembers(ctx *gin.Context) {

@@ -15,7 +15,6 @@ import (
 // @Tags Auth
 // @Accept json
 // @Produce json
-// @Param body body models.User true "用户信息"
 // @Success 200 {string} string "注册成功，返回 JWT token"
 // @Failure 400 {string} string "请求参数错误"
 // @Failure 500 {string} string "服务器内部错误"

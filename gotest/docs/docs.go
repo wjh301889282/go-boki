@@ -83,17 +83,6 @@ const docTemplate = `{
                     "Auth"
                 ],
                 "summary": "用户注册接口",
-                "parameters": [
-                    {
-                        "description": "用户信息",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "注册成功，返回 JWT token",
@@ -115,11 +104,206 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/articles/{id}/like": {
+            "post": {
+                "description": "根据文章ID，为指定文章增加一次点赞数。",
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "点赞文章",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "文章ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/articles/{id}/likes": {
+            "get": {
+                "description": "根据文章ID，获取指定文章的点赞数。",
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "获取文章点赞数",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "文章ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/teams": {
+            "post": {
+                "description": "创建一个新的团队",
+                "tags": [
+                    "团队操作"
+                ],
+                "summary": "新建团队",
+                "parameters": [
+                    {
+                        "description": "团队名称",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "团队描述",
+                        "name": "description",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "团队创建者的用户ID",
+                        "name": "owner_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "注册成功，返回 JWT token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/rsp.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/add_user": {
+            "post": {
+                "description": "将指定用户添加到团队中，并为其设置角色和权限",
+                "tags": [
+                    "团队操作"
+                ],
+                "summary": "添加用户到团队",
+                "parameters": [
+                    {
+                        "description": "团队ID",
+                        "name": "team_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "用户ID",
+                        "name": "user_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "用户角色（owner/admin/member）",
+                        "name": "role",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "权限（JSON格式）",
+                        "name": "permissions",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "注册成功，返回 JWT token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/rsp.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/{id}/members": {
+            "get": {
+                "description": "查询指定团队的所有成员信息",
+                "tags": [
+                    "团队操作"
+                ],
+                "summary": "查询团队成员",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团队ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "注册成功，返回 JWT token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/rsp.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "models.User": {
-            "type": "object"
+        "rsp.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "错误码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "附加数据，通常为额外的错误信息"
+                },
+                "message": {
+                    "description": "错误描述",
+                    "type": "string"
+                }
+            }
         }
     }
 }`
