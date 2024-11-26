@@ -32,6 +32,8 @@ func SetupRouter() *gin.Engine {
 		// 设置跨域请求的最大缓存时间，12小时
 		MaxAge: 12 * time.Hour,
 	}))
+	// 注册自定义 Recovery 中间件
+	r.Use(middlewares.RecoveryMiddleware())
 
 	// 创建一个路由组，用于认证相关的路由（以 /api/auth 为前缀）
 	auth := r.Group("/api/auth")
@@ -40,6 +42,8 @@ func SetupRouter() *gin.Engine {
 		auth.POST("/login", controllers.Login)
 		// 注册接口，使用 POST 请求
 		auth.POST("/register", controllers.Register)
+		// 发送验证码，使用POST请求
+		auth.POST("/send", controllers.SendVerificationCode)
 	}
 
 	// 创建一个路由组，用于主要的 API 路由（以 /api 为前缀）

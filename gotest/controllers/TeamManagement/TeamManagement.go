@@ -25,19 +25,13 @@ func CreateTeam(ctx *gin.Context) {
 
 	// 绑定请求体
 	if err := ctx.ShouldBindJSON(&team); err != nil {
-		ctx.JSON(http.StatusBadRequest, rsp.NewErrorResponse(30001, err.Error()))
-		return
-	}
-
-	// 自动迁移数据库
-	if err := global.Db.AutoMigrate(&team); err != nil {
-		ctx.JSON(http.StatusInternalServerError, rsp.NewErrorResponse(20004, err.Error()))
+		ctx.JSON(http.StatusBadRequest, rsp.NewErrorResponse(30001, err.Error(), team))
 		return
 	}
 
 	// 创建团队
 	if err := global.Db.Create(&team).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, rsp.NewErrorResponse(20003, err.Error()))
+		ctx.JSON(http.StatusInternalServerError, rsp.NewErrorResponse(20003, err.Error(), team))
 		return
 	}
 
@@ -60,33 +54,27 @@ func AddUserToTeam(ctx *gin.Context) {
 
 	// 绑定请求体
 	if err := ctx.ShouldBindJSON(&member); err != nil {
-		ctx.JSON(http.StatusBadRequest, rsp.NewErrorResponse(30001, err.Error()))
+		ctx.JSON(http.StatusBadRequest, rsp.NewErrorResponse(30001, err.Error(), member))
 		return
 	}
 
 	// 检查团队是否存在
 	var t team.Team
 	if err := global.Db.First(&t, member.TeamID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, rsp.NewErrorResponse(11002, "团队不存在"))
+		ctx.JSON(http.StatusNotFound, rsp.NewErrorResponse(11002, err.Error(), member.TeamID))
 		return
 	}
 
 	// 检查用户是否存在
 	var u user.User
 	if err := global.Db.First(&u, member.UserID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, rsp.NewErrorResponse(10002, "用户不存在"))
-		return
-	}
-
-	// 自动迁移数据库
-	if err := global.Db.AutoMigrate(&member); err != nil {
-		ctx.JSON(http.StatusInternalServerError, rsp.NewErrorResponse(20004, err.Error()))
+		ctx.JSON(http.StatusNotFound, rsp.NewErrorResponse(10002, err.Error(), member.UserID))
 		return
 	}
 
 	// 添加用户到团队
 	if err := global.Db.Create(&member).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, rsp.NewErrorResponse(20003, err.Error()))
+		ctx.JSON(http.StatusInternalServerError, rsp.NewErrorResponse(20003, err.Error(), member))
 		return
 	}
 
@@ -109,7 +97,7 @@ func GetTeamMembers(ctx *gin.Context) {
 	if err := global.Db.Preload("User", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "username", "email") // 只选择需要的字段
 	}).Where("team_id = ?", teamID).Find(&members).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, rsp.NewErrorResponse(11002, "未找到该团队的成员信息"))
+		ctx.JSON(http.StatusNotFound, rsp.NewErrorResponse(11002, err.Error(), teamID))
 		return
 	}
 

@@ -21,7 +21,7 @@ func HashPassword(pwd string) (string, error) {
 func GenerateJWT(username string) (string, error) {
 	// 创建一个新的 JWT，使用 HS256 算法，payload 包含用户名和过期时间
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": username,                              // 用户名
+		"username": username,                              // 账号
 		"exp":      time.Now().Add(time.Hour * 72).Unix(), // 设置 JWT 过期时间为当前时间的 72 小时后
 	})
 
