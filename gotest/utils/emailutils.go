@@ -24,10 +24,10 @@ func IsValidEmail(email string) bool {
 
 // SendEmail 发送邮件
 func SendEmail(to, subject, body string) error {
-	fromEmail := "svj04us_c4t0bak@a.web3woolbox.com"
-	fromPassword := "Cgy88888888"
-	smtpServer := "mail.a.web3woolbox.com"
-	smtpPort := 25
+	fromEmail := "你的邮箱"
+	fromPassword := "你的密码"
+	smtpServer := "服务地址"
+	smtpPort := 端口
 
 	// 创建邮件消息
 	m := gomail.NewMessage()
